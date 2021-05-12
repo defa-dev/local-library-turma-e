@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  Cria package:
+  criaPackage:
     env:
       ARTIFACT_NAME: packageBoladao
 
