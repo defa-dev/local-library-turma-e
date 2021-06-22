@@ -11,6 +11,7 @@
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart",
     "eslint": "eslint",
+    "test": "mocha"
 
   },
   "dependencies": {
