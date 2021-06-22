@@ -41,7 +41,7 @@ jobs:
 
   deploy-em-homolog:
     runs-on: ubuntu-latest
-    needs: build
+    needs: buildAndTest
     environment:
       name: 'homolog'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
