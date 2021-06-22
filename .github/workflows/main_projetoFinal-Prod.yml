@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  buildAndTest:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,6 +31,13 @@ jobs:
       with:
         name: node-app
         path: .
+  
+  lintjob:
+    runs-on: ubuntu-latest
+    
+    steps:  
+    - name: Lint Action
+      uses: wearerequired/lint-action@v1.10.0
 
   deploy-em-homolog:
     runs-on: ubuntu-latest
