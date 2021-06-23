@@ -9,9 +9,12 @@ on:
       - main
   workflow_dispatch:
 
-jobs:
+jobs: 
   buildAndTest:
     runs-on: ubuntu-latest
+    
+    env:
+      ARTIFACT_NAME: node-app
 
     steps:
     - uses: actions/checkout@v2
@@ -29,7 +32,7 @@ jobs:
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
-        name: node-app
+        name: ${{ env.ARTIFACT_NAME }}
         path: .
   
   lintjob:
@@ -41,7 +44,11 @@ jobs:
 
   deploy-em-homolog:
     runs-on: ubuntu-latest
-    needs: buildAndTest
+    env: 
+       APP_NAME_HOMOLOG: projetoFinal-Homolog
+       DB_URI: $${{secrets:DB_URI_HOMOLOG}}
+       
+    needs: [buildAndTest, lintjob]
     environment:
       name: 'homolog'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -56,14 +63,21 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'projetoFinal-Homolog'
+        app-name: ${{ env.APP_NAME_HOMOLOG }}
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: .
+        run: MONGODB_URI=${{env.DB_URI}} npm run devstart
+
 
 
   deploy-em-producao:
     runs-on: ubuntu-latest
+    
+    env:
+      APP_NAME_PROD: projetoFinal-Prod
+      DB_URI: $${{secrets:DB_URI_PROD}}
+      
     needs: deploy-em-homolog
     environment:
       name: 'production'
@@ -79,7 +93,7 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'projetoFinal-Prod'
+        app-name: ${{ env.APP_NAME_PROD }}
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_69a70517325f47f58873a2a6ad5e3e74 }}
         package: .
