@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
        APP_NAME_HOMOLOG: projetoFinal-Homolog
-       DB_URI: $${{secrets:DB_URI_HOMOLOG}}
+       DB_URI: $${{ secrets.DB_URI_HOMOLOG }}
        
     needs: [buildAndTest, lintjob]
     environment:
@@ -67,7 +67,7 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: .
-        run: MONGODB_URI=${{env.DB_URI}} npm run devstart
+        run: MONGODB_URI=${{ env.DB_URI }} npm run devstart
 
 
 
@@ -76,7 +76,7 @@ jobs:
     
     env:
       APP_NAME_PROD: projetoFinal-Prod
-      DB_URI: $${{secrets:DB_URI_PROD}}
+      DB_URI: $${{ secrets.DB_URI_PROD }}
       
     needs: deploy-em-homolog
     environment:
