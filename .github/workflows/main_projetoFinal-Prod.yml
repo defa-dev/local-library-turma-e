@@ -35,7 +35,7 @@ jobs:
           name: ${{ env.ARTIFACT_NAME }}
           path: .
 
-  linter:
+  lintjob:
     name: Lint code base
     runs-on: ubuntu-latest
 
